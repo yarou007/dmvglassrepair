@@ -4,8 +4,14 @@
   <script src="https://analytics.ahrefs.com/analytics.js" data-key="WeTIQ83W3JliROwInngfkA" async></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Commercial Glass Repair &amp; Storefront Glass | 24/7 DMV</title>
-  <meta name="description" content="Commercial storefront glass repair for businesses. 24/7 emergency commercial service across the DMV. Call now for glass service." />
+  <title>Commercial Glass Repair &amp; Storefront Glass | 24/7 Emergency DMV Service</title>
+  <meta name="description" content="Commercial storefront glass repair &amp; replacement for businesses in Washington DC, Maryland &amp; Northern Virginia. 24/7 emergency board-up, door hardware. Call 703-244-0559." />
+  <meta name="keywords" content="commercial glass repair, storefront glass replacement, emergency board-up, commercial door hardware, glass repair DMV, glass repair Washington DC, glass repair Maryland, glass repair Northern Virginia, 24/7 glass service, commercial glazing" />
+  <meta name="geo.region" content="US-DC" />
+  <meta name="geo.region" content="US-MD" />
+  <meta name="geo.region" content="US-VA" />
+  <meta name="geo.placename" content="Washington, DC" />
+  <meta http-equiv="content-language" content="en-US" />
   <meta name="robots" content="index, follow" />
 
   <!-- Replace with your real production domain -->
@@ -24,6 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="images/storefront-entry-open-sign.jpg" />
 
   <link rel="stylesheet" href="assets/styles.css" />
 
@@ -31,15 +38,62 @@
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": "https://www.glassxperts.com/#localbusiness",
     "name": "Glass Xperts",
     "url": "https://www.glassxperts.com/",
     "telephone": "+1-703-244-0559",
-    "description": "Commercial glass repair service for businesses, including storefront glass repair, emergency board-up, and commercial door hardware service.",
+    "description": "Commercial glass repair service for businesses in the DMV area, including storefront glass repair, emergency board-up, commercial door hardware, and glass partitions.",
+    "image": "https://www.glassxperts.com/images/og-image.jpg",
+    "priceRange": "$$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "00:00",
+      "closes": "23:59"
+    },
     "areaServed": [
-      "Washington, DC",
-      "Maryland",
-      "Northern Virginia"
-    ]
+      {"@type": "City", "name": "Washington, DC"},
+      {"@type": "City", "name": "Arlington, VA"},
+      {"@type": "City", "name": "Alexandria, VA"},
+      {"@type": "City", "name": "Fairfax, VA"},
+      {"@type": "City", "name": "Tysons, VA"},
+      {"@type": "City", "name": "McLean, VA"},
+      {"@type": "City", "name": "Reston, VA"},
+      {"@type": "City", "name": "Herndon, VA"},
+      {"@type": "City", "name": "Falls Church, VA"},
+      {"@type": "City", "name": "Bethesda, MD"},
+      {"@type": "City", "name": "Silver Spring, MD"},
+      {"@type": "City", "name": "Rockville, MD"},
+      {"@type": "City", "name": "Gaithersburg, MD"},
+      {"@type": "City", "name": "College Park, MD"},
+      {"@type": "City", "name": "Hyattsville, MD"},
+      {"@type": "City", "name": "Bowie, MD"},
+      {"@type": "City", "name": "Laurel, MD"}
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Commercial Glass Services",
+      "itemListElement": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Storefront Glass Repair & Replacement"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Emergency Board-Up Service"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Commercial Door Hardware Repair"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Glass Partitions"}}
+      ]
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Glass Xperts",
+    "url": "https://www.glassxperts.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.glassxperts.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   }
   </script>
 </head>
@@ -85,7 +139,7 @@
     </div>
 
     <div class="hero-media" aria-hidden="true">
-      <img src="images/storefront-entry-open-sign.jpg" alt="Commercial storefront entry door with open sign" loading="eager" />
+      <img src="images/storefront-entry-open-sign.jpg" alt="Commercial storefront entry door with open sign — Glass Xperts 24/7 glass repair service in the DMV" loading="eager" fetchpriority="high" width="840" height="560" decoding="async" />
     </div>
   </header>
 
@@ -282,12 +336,14 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Legal</h4>
+        <h4>Locations</h4>
         <ul>
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="washington-dc-commercial-glass.html">Washington, DC</a></li>
+          <li><a href="maryland-commercial-glass.html">Maryland</a></li>
+          <li><a href="northern-virginia-commercial-glass.html">Northern Virginia</a></li>
         </ul>
       </div>
+
     </div>
     <div class="footer-bottom">
       <p>© 2026 Glass Xperts. All rights reserved.</p>

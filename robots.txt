@@ -1,4 +1,12 @@
+# Glass Xperts - robots.txt
+# https://www.glassxperts.com/
+
 User-agent: *
 Allow: /
+Disallow: /assets/
 
+# Crawl rate
+Crawl-delay: 1
+
+# Sitemap
 Sitemap: https://www.glassxperts.com/sitemap.xml
