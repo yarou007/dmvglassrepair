@@ -9,4 +9,4 @@ Disallow: /assets/
 Crawl-delay: 1
 
 # Sitemap
-Sitemap: https://www.glassxperts.com/sitemap.xml
+Sitemap: https://dmv247glassrepair.com/sitemap.xml
