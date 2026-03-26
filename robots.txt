@@ -1,12 +1,10 @@
-# Glass Xperts - robots.txt
-# https://www.glassxperts.com/
+# dmv247glassrepair.com robots.txt
 
 User-agent: *
 Allow: /
-Disallow: /assets/
 
 # Crawl rate
 Crawl-delay: 1
 
 # Sitemap
-Sitemap: https://dmv247glassrepair.com/sitemap.xml
+Sitemap: https://www.dmv247glassrepair.com/sitemap.xml
