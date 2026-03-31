@@ -39,6 +39,7 @@ body::before {
     radial-gradient(ellipse 60% 80% at 90% 80%, rgba(232, 184, 75, 0.08) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
+  will-change: auto;
 }
 
 img {
@@ -1013,6 +1014,11 @@ footer {
 }
 
 @media (max-width: 600px) {
+  /* Remove expensive gradient overlay on mobile */
+  body::before {
+    display: none;
+  }
+
   .hero {
     padding: 60px 5%;
     min-height: auto;
@@ -1026,11 +1032,19 @@ footer {
   .btn-primary,
   .btn-secondary {
     justify-content: center;
+    touch-action: manipulation;
+  }
+
+  .nav-cta,
+  .nav-toggle,
+  .floating-call {
+    touch-action: manipulation;
   }
 
   .cta-phone {
     font-size: 22px;
     padding: 16px 30px;
+    touch-action: manipulation;
   }
 
   .footer-grid {
@@ -1045,9 +1059,46 @@ footer {
     width: 44px;
     height: 44px;
     font-size: 20px;
+    touch-action: manipulation;
   }
 
   .service-img-card img {
     height: 200px;
+  }
+
+  /* Reduce animation complexity on mobile */
+  .fade-in {
+    transform: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  /* Speed up rendering of below-fold sections */
+  .section-pad {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+  }
+
+  .cta-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 400px;
+  }
+
+  /* Reduce floating button animation on mobile */
+  .floating-call {
+    animation: none;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }
