@@ -1,4 +1,4 @@
-# dmv247glassrepair.com robots.txt
+# capitalglassdoor.com robots.txt
 
 User-agent: *
 Allow: /
@@ -7,4 +7,4 @@ Allow: /
 Crawl-delay: 1
 
 # Sitemap
-Sitemap: https://www.dmv247glassrepair.com/sitemap.xml
+Sitemap: https://www.capitalglassdoor.com/sitemap.xml
