@@ -1,0 +1,23 @@
+DMV Glass Repair information file
+
+Business name: Capital Glass Door
+Primary services: emergency glass repair, emergency board-up, storefront glass repair, commercial glass repair, commercial door hardware, shower door repair, residential glass services, energy-efficient glass upgrades.
+Service area: Washington DC, Northern Virginia, Maryland, Baltimore (coverage varies by location and urgency).
+Phone: 703-244-0559, 202-643-4062
+Hours: 24/7 emergency response
+
+Key pages:
+- https://www.capitalglassdoor.com/
+- https://www.capitalglassdoor.com/services.html
+- https://www.capitalglassdoor.com/emergency-board-up.html
+- https://www.capitalglassdoor.com/commercial-glass-repair.html
+- https://www.capitalglassdoor.com/shower-doors.html
+- https://www.capitalglassdoor.com/residential-glass-services.html
+- https://www.capitalglassdoor.com/energy-efficient-glass.html
+- https://www.capitalglassdoor.com/safety-compliance.html
+- https://www.capitalglassdoor.com/blog.html
+
+Notes:
+- Safety glazing standards referenced: ANSI Z97.1 and CPSC 16 CFR 1201.
+- UL-rated glass guidance is available for security-focused projects.
+- For emergencies, phone calls are preferred for fastest dispatch.
