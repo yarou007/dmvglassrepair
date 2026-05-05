@@ -499,6 +499,20 @@ nav {
   font-size: 14px;
 }
 
+.quick-emergency-cta {
+  background: rgba(232, 75, 75, 0.12);
+  border-top: 1px solid rgba(232, 75, 75, 0.35);
+  border-bottom: 1px solid rgba(232, 75, 75, 0.35);
+  padding: 22px 5%;
+}
+
+.quick-emergency-cta p {
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
 .section-pad {
   padding: 92px 5%;
 }
@@ -1035,6 +1049,33 @@ footer {
   box-shadow: 0 16px 48px rgba(232, 75, 75, 0.5);
 }
 
+.floating-quote {
+  position: fixed;
+  bottom: 90px;
+  right: 28px;
+  z-index: 998;
+  background: var(--accent);
+  color: #000;
+  font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 11px 18px;
+  border-radius: 100px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(232, 184, 75, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.floating-quote:hover {
+  transform: scale(1.05) translateY(-4px);
+  box-shadow: 0 14px 38px rgba(232, 184, 75, 0.45);
+}
+
 @keyframes float-btn {
   0%,
   100% {
@@ -1097,7 +1138,8 @@ footer {
 
   .nav-cta,
   .nav-toggle,
-  .floating-call {
+  .floating-call,
+  .floating-quote {
     touch-action: manipulation;
   }
 
@@ -1147,6 +1189,31 @@ footer {
   /* Reduce floating button animation on mobile */
   .floating-call {
     animation: none;
+    bottom: 0;
+    right: auto;
+    left: 0;
+    width: 64%;
+    border-radius: 0;
+    justify-content: center;
+    padding: 14px 10px;
+    font-size: 14px;
+    box-shadow: 0 -6px 30px rgba(232, 75, 75, 0.3);
+  }
+
+  .floating-quote {
+    bottom: 0;
+    right: 0;
+    left: auto;
+    width: 36%;
+    border-radius: 0;
+    text-align: center;
+    justify-content: center;
+    padding: 14px 8px;
+    font-size: 13px;
+  }
+
+  body {
+    padding-bottom: 52px;
   }
 }
 
