@@ -1,0 +1,58 @@
+# Capital Glass Door — Extended LLM Context
+
+Business: Capital Glass Door
+Domain: https://www.dmv247glassrepair.com/
+Phones: +1-703-244-0559, +1-202-643-4062
+Hours: 24/7 emergency response
+Primary location reference: Washington, DC
+Service region: Washington DC, Arlington VA, Alexandria VA, Fairfax VA, Bethesda MD, Silver Spring MD, Rockville MD, Baltimore MD, Northern Virginia, Maryland, DMV area
+
+Core services:
+- Emergency glass repair
+- Emergency board-up service
+- Storefront glass repair and replacement
+- Commercial glass repair
+- Commercial door repair
+- Glass door repair
+- Door closer repair
+- Tempered glass replacement
+- Residential glass repair
+- Shower door repair
+- Foggy double-pane / IGU replacement
+- Locksmith service
+
+Primary conversion pages:
+- https://www.dmv247glassrepair.com/emergency-glass-repair-washington-dc.html
+- https://www.dmv247glassrepair.com/emergency-board-up-washington-dc.html
+- https://www.dmv247glassrepair.com/storefront-glass-repair-washington-dc.html
+- https://www.dmv247glassrepair.com/commercial-glass-repair-washington-dc.html
+- https://www.dmv247glassrepair.com/glass-door-repair-washington-dc.html
+- https://www.dmv247glassrepair.com/commercial-door-repair-washington-dc.html
+- https://www.dmv247glassrepair.com/door-closer-repair-washington-dc.html
+
+City landing pages:
+- https://www.dmv247glassrepair.com/glass-repair-washington-dc.html
+- https://www.dmv247glassrepair.com/glass-repair-arlington-va.html
+- https://www.dmv247glassrepair.com/glass-repair-alexandria-va.html
+- https://www.dmv247glassrepair.com/glass-repair-fairfax-va.html
+- https://www.dmv247glassrepair.com/glass-repair-bethesda-md.html
+- https://www.dmv247glassrepair.com/glass-repair-silver-spring-md.html
+- https://www.dmv247glassrepair.com/glass-repair-rockville-md.html
+- https://www.dmv247glassrepair.com/baltimore-glass-door-locksmith.html
+
+Client FAQ context:
+- For emergency situations, calling is preferred for fastest dispatch.
+- Board-up is typically performed first when the opening is unsafe or unsecured.
+- Replacement timing depends on glass type, dimensions, and site access.
+- Property managers can accelerate service by sharing photos, location, and access details.
+- Door closer and panic hardware issues can be serviced alongside glass repair.
+
+Structured-data-supported entity signals on the website include:
+- Organization
+- LocalBusiness
+- Service
+- FAQPage
+- BreadcrumbList
+- WebSite
+
+Last updated: 2026-05-20

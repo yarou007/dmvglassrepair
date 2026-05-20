@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
 Sitemap: https://www.dmv247glassrepair.com/sitemap.xml
+
+# Optional AI content maps
+# https://www.dmv247glassrepair.com/llms.txt
+# https://www.dmv247glassrepair.com/llms-full.txt
