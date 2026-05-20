@@ -1,0 +1,22 @@
+{
+  "name": "Capital Glass Door",
+  "short_name": "Capital Glass",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "description": "24/7 emergency glass repair, board-up, storefront glass, commercial door repair, and locksmith service in Washington DC and the DMV.",
+  "icons": [
+    {
+      "src": "images/window.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/window.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
