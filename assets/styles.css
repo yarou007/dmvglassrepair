@@ -719,59 +719,6 @@ nav {
   border: 0;
 }
 
-.quote-form {
-  margin-top: 28px;
-}
-
-/* ====== FORMS ====== */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 18px;
-}
-
-.form-grid .full {
-  grid-column: 1 / -1;
-}
-
-label {
-  display: block;
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--text);
-  padding: 12px 12px;
-  border-radius: 8px;
-  outline: none;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: rgba(232, 184, 75, 0.6);
-  box-shadow: 0 0 0 3px rgba(232, 184, 75, 0.12);
-}
-
-textarea {
-  min-height: 130px;
-  resize: vertical;
-}
-
-.small-note {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 10px;
-}
-
 /* ====== CTA SECTION ====== */
 .cta-section {
   background: linear-gradient(135deg, var(--accent) 0%, #d4a420 100%);
@@ -1049,78 +996,40 @@ footer {
   box-shadow: 0 16px 48px rgba(232, 75, 75, 0.5);
 }
 
-.floating-quote {
-  position: fixed;
-  bottom: 90px;
-  right: 28px;
-  z-index: 998;
-  background: var(--accent);
-  color: #000;
-  font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 11px 18px;
-  border-radius: 100px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 30px rgba(232, 184, 75, 0.35);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.floating-quote:hover {
-  transform: scale(1.05) translateY(-4px);
-  box-shadow: 0 14px 38px rgba(232, 184, 75, 0.45);
-}
-
-/* ====== MOBILE STICKY CTA BAR ====== */
-.mobile-sticky-cta {
+/* ====== MOBILE STICKY CALL CTA ====== */
+.mobile-call-sticky {
   display: none;
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 14px;
+  right: 14px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
   z-index: 1100;
-  grid-template-columns: 1fr 1fr 1fr;
-  border-top: 1px solid var(--border);
-  box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.35);
-}
-
-.mobile-sticky-item {
-  min-height: 54px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  padding: 12px 8px;
-}
-
-.mobile-sticky-call {
+  min-height: 56px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.22);
   background: var(--danger);
   color: #fff;
+  box-shadow: 0 12px 32px rgba(232, 75, 75, 0.42);
+  text-decoration: none;
+  font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 14px 18px;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.mobile-sticky-quote {
-  background: var(--accent);
-  color: #000;
+.mobile-call-sticky:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 42px rgba(232, 75, 75, 0.48);
 }
 
-.mobile-sticky-text {
-  background: #1f9f56;
-  color: #fff;
-}
-
-.mobile-sticky-item:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: -3px;
+.mobile-call-sticky:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
 }
 
 @keyframes float-btn {
@@ -1156,8 +1065,19 @@ footer {
     gap: 40px;
   }
 
-  .form-grid {
-    grid-template-columns: 1fr;
+}
+
+@media (max-width: 768px) {
+  .floating-call {
+    display: none;
+  }
+
+  .mobile-call-sticky {
+    display: flex;
+  }
+
+  body {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 88px);
   }
 }
 
@@ -1186,8 +1106,7 @@ footer {
   .nav-cta,
   .nav-toggle,
   .floating-call,
-  .floating-quote,
-  .mobile-sticky-item {
+  .mobile-call-sticky {
     touch-action: manipulation;
   }
 
@@ -1239,16 +1158,12 @@ footer {
     display: none;
   }
 
-  .floating-quote {
-    display: none;
-  }
-
-  .mobile-sticky-cta {
-    display: grid;
+  .mobile-call-sticky {
+    display: flex;
   }
 
   body {
-    padding-bottom: 62px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 88px);
   }
 }
 
