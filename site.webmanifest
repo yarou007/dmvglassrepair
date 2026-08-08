@@ -9,7 +9,7 @@
   "description": "24/7 emergency glass repair, board-up, storefront glass, commercial door repair, and locksmith service in Washington DC and the DMV.",
   "icons": [
     {
-      "src": "images/window.png",
+      "src": "images/window-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },

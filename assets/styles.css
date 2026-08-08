@@ -8,7 +8,7 @@
   --muted: #8a92a8;
   --surface: #0f1f3d;
   --surface2: #162240;
-  --danger: #e84b4b;
+  --danger: #b42318;
 }
 
 *,
@@ -51,6 +51,12 @@ a {
   color: inherit;
 }
 
+:where(a, button, summary, [tabindex]):focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--accent2);
+}
+
 .skip-link {
   position: absolute;
   left: -999px;
@@ -91,7 +97,6 @@ footer {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   z-index: 100;
-  animation: pulse-bar 2s ease-in-out infinite;
 }
 
 .emergency-bar a {
@@ -101,16 +106,6 @@ footer {
 
 .emergency-bar a:hover {
   text-decoration: underline;
-}
-
-@keyframes pulse-bar {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.86;
-  }
 }
 
 /* ====== NAV ====== */
@@ -144,8 +139,10 @@ nav {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: auto;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 10px;
   border-radius: 50%;
   border: 1px solid transparent;
 }
@@ -157,9 +154,13 @@ nav {
   background: rgba(232, 184, 75, 0.08);
 }
 
-.nav-social a .fa-instagram:hover { color: #E4405F; }
-.nav-social a .fa-tiktok:hover { color: #00f2ea; }
-.nav-social a .fa-facebook-f:hover { color: #1877F2; }
+.social-text {
+  font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
 
 .nav-logo {
   font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -206,6 +207,9 @@ nav {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .nav-cta:hover {
@@ -223,6 +227,8 @@ nav {
   font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .nav-toggle:hover {
@@ -290,6 +296,7 @@ nav {
   transition: all 0.2s;
   border: none;
   cursor: pointer;
+  min-height: 44px;
 }
 
 .btn-primary:hover {
@@ -311,6 +318,14 @@ nav {
   text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.2s;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.call-cta {
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
 .btn-secondary:hover {
@@ -323,7 +338,10 @@ nav {
 .hero {
   position: relative;
   min-height: 86vh;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 720px) minmax(260px, 360px);
+  justify-content: space-between;
+  gap: clamp(32px, 4vw, 64px);
   align-items: center;
   padding: 80px 5%;
   overflow: hidden;
@@ -367,22 +385,11 @@ nav {
   height: 8px;
   background: var(--accent);
   border-radius: 50%;
-  animation: blink 1.2s ease-in-out infinite;
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
 }
 
 .hero h1 {
   font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-size: clamp(44px, 7vw, 88px);
+  font-size: clamp(44px, 5.5vw, 72px);
   font-weight: 900;
   line-height: 0.95;
   text-transform: uppercase;
@@ -438,11 +445,11 @@ nav {
 }
 
 .hero-media {
-  position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: min(420px, 38vw);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: 650px;
+  justify-self: end;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -837,9 +844,11 @@ footer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: auto;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 999px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.03);
   color: var(--muted);
@@ -855,10 +864,6 @@ footer {
   color: var(--accent);
   background: rgba(232, 184, 75, 0.08);
 }
-
-.footer-social a:hover .fa-instagram { color: #E4405F; }
-.footer-social a:hover .fa-tiktok { color: #00f2ea; }
-.footer-social a:hover .fa-facebook-f { color: #1877F2; }
 
 .footer-col h4 {
   font-family: "Barlow Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -987,7 +992,6 @@ footer {
   display: flex;
   align-items: center;
   gap: 10px;
-  animation: float-btn 3s ease-in-out infinite;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -1032,33 +1036,29 @@ footer {
   outline-offset: 2px;
 }
 
-@keyframes float-btn {
-  0%,
-  100% {
-    box-shadow: 0 8px 32px rgba(232, 75, 75, 0.4);
-  }
-  50% {
-    box-shadow: 0 16px 48px rgba(232, 75, 75, 0.6);
-  }
-}
-
 /* ====== FADE-IN ====== */
 .fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  opacity: 1;
+  transform: none;
 }
 
 .fade-in.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* ====== RESPONSIVE ====== */
-@media (max-width: 960px) {
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
   .hero-media {
     display: none;
   }
+}
+
+@media (max-width: 960px) {
 
   .footer-grid {
     grid-template-columns: 1fr 1fr;
@@ -1078,6 +1078,14 @@ footer {
 
   body {
     padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 88px);
+  }
+
+  html {
+    scroll-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px);
+  }
+
+  body.nav-open .mobile-call-sticky {
+    display: none;
   }
 }
 
@@ -1125,21 +1133,14 @@ footer {
   }
 
   .footer-social a {
-    width: 44px;
+    width: auto;
+    min-width: 44px;
     height: 44px;
-    font-size: 20px;
     touch-action: manipulation;
   }
 
   .service-img-card img {
     height: 200px;
-  }
-
-  /* Reduce animation complexity on mobile */
-  .fade-in {
-    transform: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
   }
 
   /* Speed up rendering of below-fold sections */

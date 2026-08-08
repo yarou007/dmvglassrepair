@@ -1,0 +1,46 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "https://www.dmv247glassrepair.com/",
+      "statusCode": 301
+    },
+    {
+      "source": "/emergency-glass-repair.html",
+      "destination": "https://www.dmv247glassrepair.com/emergency-glass-repair-washington-dc.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/emergency-board-up.html",
+      "destination": "https://www.dmv247glassrepair.com/emergency-board-up-washington-dc.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/storefront-glass-repair.html",
+      "destination": "https://www.dmv247glassrepair.com/storefront-glass-repair-washington-dc.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/commercial-glass-repair-dc.html",
+      "destination": "https://www.dmv247glassrepair.com/commercial-glass-repair-washington-dc.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/washington-dc-commercial-glass.html",
+      "destination": "https://www.dmv247glassrepair.com/commercial-glass-repair-washington-dc.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "dmv247glassrepair.com"
+        }
+      ],
+      "destination": "https://www.dmv247glassrepair.com/:path*",
+      "statusCode": 301
+    }
+  ]
+}
