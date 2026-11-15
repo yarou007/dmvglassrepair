@@ -1,7 +1,7 @@
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { redirectMap } from "./site-config.mjs";
+import { primaryPhone, redirectMap } from "./site-config.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const entries = await readdir(root, { withFileTypes: true });
@@ -91,6 +91,10 @@ for (const file of htmlFiles) {
     );
   }
 
+  html = html.replace(/<a\b([^>]*\bhref=["'])tel:[^"']+(["'][^>]*)>([\s\S]*?)<\/a>/gi,
+    (_, before, after, label) => `<a${before}tel:${primaryPhone.e164}${after}>${label.replace(/(?:\+?1[- .]?)?\d{3}[- .]\d{3}[- .]\d{4}/g, primaryPhone.display)}</a>`);
+  html = html.replace(/("telephone"\s*:\s*)(?:\[[^\]]*\]|"[^"]*")/g, `$1"${primaryPhone.e164}"`);
+
   html = replaceAll(html, [
     [/href=(['"])index\.html\1/gi, 'href="/"'],
     [
@@ -101,13 +105,6 @@ for (const file of htmlFiles) {
       /content="width=device-width, initial-scale=1\.0"/gi,
       'content="width=device-width, initial-scale=1.0, viewport-fit=cover"',
     ],
-    [
-      /\[\s*"\+1-703-244-0559"\s*,\s*"\+1-202-643-4062"\s*\]/g,
-      '"+1-703-244-0559"',
-    ],
-    [/\+1-703-244-0559/g, "+17032440559"],
-    [/703-244-0559\s*(?:or|and|\/|\|)\s*202-643-4062/gi, "703-244-0559"],
-    [/\+1-703-244-0559\s*,\s*\+1-202-643-4062/g, "+1-703-244-0559"],
     [/https:\/\/www\.dmv247glassrepair\.com\/#localbusiness/g, "https://www.dmv247glassrepair.com/#business"],
     [/<h2>Request Service<\/h2>/gi, "<h2>Call for Service</h2>"],
     [/<h2>Get a Quote<\/h2>/gi, "<h2>Call for Service</h2>"],
@@ -174,8 +171,8 @@ for (const file of htmlFiles) {
     [/Call for a Quote/gi, "Call for Service"],
     [/For a quick quote, call/gi, "For scheduled service, call"],
     [/For the fastest quote, call/gi, "For the fastest next step, call"],
-    [/Call 703-244-0559 for a Free Estimate/gi, "Call 703-244-0559 for Glass Door Installation"],
-    [/Call for a Free Estimate: 703-244-0559/gi, "Call 703-244-0559 for Storefront Glass Repair"],
+    [/Call 202-643-4062 for a Free Estimate/gi, "Call 202-643-4062 for Glass Door Installation"],
+    [/Call for a Free Estimate: 202-643-4062/gi, "Call 202-643-4062 for Storefront Glass Repair"],
     [/Call for a free estimate on/gi, "Call to discuss"],
   ]);
 
@@ -220,11 +217,6 @@ for (const file of htmlFiles) {
   html = html.replace(
     /\s*<a\b(?=[^>]*\bclass="[^"]*\bfloating-call\b)[^>]*>[^<]*<\/a>\s*/gi,
     "\n"
-  );
-
-  html = html.replace(
-    /(?:\s*(?:or|\|)\s*|\s*<br\s*\/?>\s*)?<a\b(?=[^>]*href="tel:\+12026434062")[^>]*>[^<]*<\/a>/gi,
-    ""
   );
 
   html = html.replace(
@@ -289,12 +281,7 @@ const identityFiles = ["llm.txt", "llms.txt", "llms-full.txt", ".well-known/llms
 for (const file of identityFiles) {
   const path = resolve(root, file);
   const original = await readFile(path, "utf8");
-  const updated = replaceAll(original, [
-    [/^.*Secondary phone:.*202-643-4062.*\n?/gim, ""],
-    [/^- 202-643-4062\s*\n?/gm, ""],
-    [/Phones:\s*\+1-703-244-0559,\s*\+1-202-643-4062/g, "Primary phone: +1-703-244-0559"],
-    [/703-244-0559\s+(?:and|or|\/|\|)\s+202-643-4062/g, "703-244-0559"],
-  ]);
+  const updated = original.replace(/^(-?\s*Primary phone:)\s*.*$/gm, `$1 ${primaryPhone.e164}`);
   if (updated !== original) {
     await writeFile(path, updated);
     changedCount += 1;

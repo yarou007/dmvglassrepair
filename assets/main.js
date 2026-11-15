@@ -5,8 +5,12 @@
   const SITE_CONFIG = Object.freeze({
     brand: "Capital Glass Door",
     primaryPhone: Object.freeze({
+      display: "202-643-4062",
+      e164: "+12026434062",
+    }),
+    whatsapp: Object.freeze({
       display: "703-244-0559",
-      e164: "+17032440559",
+      url: "https://wa.me/17032440559",
     }),
   });
 
@@ -182,7 +186,7 @@
     return "mid_page";
   };
 
-  const ensurePhoneLinkMeta = (link) => {
+  const ensureContactLinkMeta = (link) => {
     const service = SERVICES.has(link.dataset.service)
       ? link.dataset.service
       : PAGE_CONTEXT.service;
@@ -197,30 +201,17 @@
     link.removeAttribute("data-cta-location");
 
     const number = (link.getAttribute("href") || "").replace(/^tel:/i, "");
-    const displayNumber = number === SITE_CONFIG.primaryPhone.e164
+    const isWhatsapp = link.getAttribute("href") === SITE_CONFIG.whatsapp.url;
+    const displayNumber = isWhatsapp
+      ? SITE_CONFIG.whatsapp.display
+      : number === SITE_CONFIG.primaryPhone.e164
       ? SITE_CONFIG.primaryPhone.display
       : number;
     link.dataset.visibleNumber = displayNumber;
     link.setAttribute(
       "aria-label",
-      `Call ${SITE_CONFIG.brand} at ${displayNumber} for ${humanize(service)}`
+      `${isWhatsapp ? "Message" : "Call"} ${SITE_CONFIG.brand} ${isWhatsapp ? "on WhatsApp" : "at"} ${displayNumber} for ${humanize(service)}`
     );
-  };
-
-  const createMobileStickyCall = () => {
-    if (document.querySelector(".mobile-call-sticky")) return;
-    const sticky = document.createElement("a");
-    sticky.className = "mobile-call-sticky call-cta";
-    sticky.href = `tel:${SITE_CONFIG.primaryPhone.e164}`;
-    sticky.textContent = "Call Now";
-    sticky.dataset.ctaPosition = "sticky_mobile";
-    sticky.dataset.service = PAGE_CONTEXT.service;
-    sticky.dataset.location = PAGE_CONTEXT.location;
-    sticky.setAttribute(
-      "aria-label",
-      `Call ${SITE_CONFIG.brand} now at ${SITE_CONFIG.primaryPhone.display}`
-    );
-    document.body.appendChild(sticky);
   };
 
   const safeSessionGet = (key) => {
@@ -322,10 +313,12 @@
 
   document.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) return;
-    const link = event.target.closest('a[href^="tel:"]');
+    const link = event.target.closest('a[href^="tel:"], a.whatsapp-cta');
     if (!link) return;
+    const isWhatsapp = link.getAttribute("href") === SITE_CONFIG.whatsapp.url;
+    if (!isWhatsapp && !link.getAttribute("href")?.startsWith("tel:")) return;
 
-    ensurePhoneLinkMeta(link);
+    ensureContactLinkMeta(link);
     if (typeof window.gtag !== "function") return;
 
     const eventParameters = {
@@ -341,16 +334,15 @@
     if (REFERRER_DOMAIN) eventParameters.referrer_domain = REFERRER_DOMAIN;
 
     try {
-      window.gtag("event", "phone_click", eventParameters);
+      window.gtag("event", isWhatsapp ? "whatsapp_click" : "phone_click", eventParameters);
     } catch {
       // Analytics must never prevent or delay the native telephone action.
     }
   });
 
-  document.querySelectorAll('a[href^="tel:"]').forEach(ensurePhoneLinkMeta);
+  document.querySelectorAll('a[href^="tel:"], a.whatsapp-cta').forEach(ensureContactLinkMeta);
   document.querySelectorAll("img").forEach((img) => {
     if (!img.hasAttribute("loading")) img.setAttribute("loading", "lazy");
     if (!img.hasAttribute("decoding")) img.setAttribute("decoding", "async");
   });
-  createMobileStickyCall();
 })();

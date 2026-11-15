@@ -5,6 +5,9 @@ import os
 import re
 import shutil
 import subprocess
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from threading import Thread
 from pathlib import Path
 from tempfile import TemporaryDirectory, gettempdir
 
@@ -18,6 +21,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 ROOT = Path(__file__).resolve().parent.parent
+BASE_URL = ""
 CORE_PAGES = [
     "index.html",
     "emergency-glass-repair-washington-dc.html",
@@ -27,6 +31,16 @@ CORE_PAGES = [
     "commercial-door-repair-washington-dc.html",
     "glass-door-repair-washington-dc.html",
     "door-closer-repair-washington-dc.html",
+]
+CITY_PAGES = [
+    "glass-repair-washington-dc.html",
+    "glass-repair-arlington-va.html",
+    "glass-repair-alexandria-va.html",
+    "glass-repair-fairfax-va.html",
+    "glass-repair-bethesda-md.html",
+    "glass-repair-silver-spring-md.html",
+    "glass-repair-rockville-md.html",
+    "baltimore-glass-door-locksmith.html",
 ]
 ALLOWED_POSITIONS = {
     "header",
@@ -47,7 +61,7 @@ def check(condition, message):
 
 
 def local_url(file_name, query=""):
-    return f"{(ROOT / file_name).as_uri()}{query}"
+    return f"{BASE_URL}/{file_name}{query}"
 
 
 def executable_version(path):
@@ -196,8 +210,8 @@ def main():
             )
             check(sticky_state["display"] == "flex", "mobile sticky CTA is not visible")
             check(sticky_state["width"] >= 44 and sticky_state["height"] >= 44, "sticky CTA target is below 44px")
-            check("703-244-0559" in sticky_state["aria"], "sticky accessible name lacks the phone number")
-            check(sticky_state["href"] == "tel:+17032440559", "sticky tel destination is incorrect")
+            check("202-643-4062" in sticky_state["aria"], "sticky accessible name lacks the phone number")
+            check(sticky_state["href"] == "tel:+12026434062", "sticky tel destination is incorrect")
             check(sticky_state["position"] == "sticky_mobile", "sticky analytics position is incorrect")
             check(sticky_state["animation"] == "none", "sticky CTA has an intrusive animation")
             check(sticky_state["bodyPadding"] >= 88, "mobile content lacks sticky-CTA clearance")
@@ -220,7 +234,7 @@ def main():
                 nested.textContent = link.textContent;
                 link.textContent = '';
                 link.appendChild(nested);
-                const event = new MouseEvent('click', {bubbles: true, cancelable: true});
+                const event = new Event('click', {bubbles: true, cancelable: true});
                 nested.dispatchEvent(event);
                 return {calls: window.__phoneEvents, defaultPrevented: event.defaultPrevented};
                 """
@@ -233,7 +247,7 @@ def main():
             check(parameters["cta_position"] == "hero", "hero CTA position was not preserved")
             check(parameters["service"] == "emergency-glass-repair", "homepage service context is incorrect")
             check(parameters["location"] == "washington-dc-dmv", "homepage location context is incorrect")
-            check(parameters["visible_number"] == "703-244-0559", "visible_number is incorrect")
+            check(parameters["visible_number"] == "202-643-4062", "visible_number is incorrect")
             check(parameters["utm_source"] == "test" and parameters["utm_medium"] == "cpc", "UTM attribution is missing")
             check(parameters["has_gclid"] is True, "gclid presence flag is missing")
             check("gclid" not in parameters, "raw gclid value leaked into analytics")
@@ -244,7 +258,7 @@ def main():
                 """
                 window.gtag = undefined;
                 const link = document.querySelector('#cta-call-hero');
-                const event = new MouseEvent('click', {bubbles: true, cancelable: true});
+                const event = new Event('click', {bubbles: true, cancelable: true});
                 link.dispatchEvent(event);
                 return event.defaultPrevented;
                 """
@@ -275,7 +289,7 @@ def main():
                 {
                     "utm_source": "paid search",
                     "utm_medium": "owner@example.com",
-                    "utm_campaign": "703-244-0559",
+                    "utm_campaign": "202-643-4062",
                     "utm_term": "123 Main Street",
                     "utm_content": "invalid value",
                     "has_gclid": "true",
@@ -287,7 +301,7 @@ def main():
                 """
                 window.__phoneEvents = [];
                 window.gtag = (...args) => window.__phoneEvents.push(args);
-                const event = new MouseEvent('click', {bubbles: true, cancelable: true});
+                const event = new Event('click', {bubbles: true, cancelable: true});
                 document.querySelector('#cta-call-hero').dispatchEvent(event);
                 return {
                   calls: window.__phoneEvents,
@@ -333,7 +347,7 @@ def main():
                 """
                 window.__phoneEvents = [];
                 window.gtag = (...args) => window.__phoneEvents.push(args);
-                const event = new MouseEvent('click', {bubbles: true, cancelable: true});
+                const event = new Event('click', {bubbles: true, cancelable: true});
                 document.querySelector('#cta-call-hero').dispatchEvent(event);
                 return {
                   calls: window.__phoneEvents,
@@ -469,7 +483,7 @@ def main():
                 )
 
             driver.set_window_size(1200, 900)
-            check(driver.execute_script("return getComputedStyle(document.querySelector('.mobile-call-sticky')).display") == "none", "mobile sticky CTA remains visible on desktop")
+            check(driver.execute_script("return getComputedStyle(document.querySelector('.mobile-contact-bar')).display") == "none", "mobile sticky CTA remains visible on desktop")
             check(len(driver.find_elements(By.CSS_SELECTOR, ".floating-call")) == 0, "legacy floating CTA remains in the DOM")
 
             for page in CORE_PAGES:
@@ -510,10 +524,100 @@ def main():
                 "Baltimore body/sticky location context is incorrect",
             )
 
-            print(f"Browser smoke tests passed for {len(CORE_PAGES)} core pages.")
+            for page in CORE_PAGES + CITY_PAGES:
+                driver.get(local_url(page))
+                wait.until(lambda current: current.execute_script("return Boolean(window.CapitalGlassDoor)"))
+                contacts = driver.execute_script(
+                    """
+                    return {
+                      calls: [...document.querySelectorAll('a[href^="tel:"]')].map(a => a.getAttribute('href')),
+                      messages: [...document.querySelectorAll('.whatsapp-cta')].map(a => a.getAttribute('href')),
+                      prohibited: document.querySelectorAll('form, input, textarea, a[href^="mailto:"], a[href^="sms:"]').length,
+                    };
+                    """
+                )
+                check(contacts["calls"] and all(href == "tel:+12026434062" for href in contacts["calls"]), f"{page}: wrong direct-call destination")
+                check(contacts["messages"] and all(href == "https://wa.me/17032440559" for href in contacts["messages"]), f"{page}: WhatsApp destination changed")
+                check(contacts["prohibited"] == 0, f"{page}: prohibited contact action")
+                if page in CITY_PAGES:
+                    check(len(driver.find_elements(By.CSS_SELECTOR, '.neighborhood-coverage article')) == 3, f"{page}: neighborhood guidance missing")
+                messaging = driver.execute_script(
+                    """
+                    window.__contactEvents = [];
+                    window.gtag = (...args) => window.__contactEvents.push(args);
+                    const link = document.querySelector('.whatsapp-cta');
+                    const event = new Event('click', {bubbles: true, cancelable: true});
+                    link.dispatchEvent(event);
+                    return {calls: window.__contactEvents, prevented: event.defaultPrevented};
+                    """
+                )
+                check(not messaging["prevented"] and len(messaging["calls"]) == 1, f"{page}: WhatsApp event blocked or duplicated")
+                check(messaging["calls"][0][:2] == ["event", "whatsapp_click"], f"{page}: WhatsApp tracked as a call")
+                check(messaging["calls"][0][2]["visible_number"] == "703-244-0559", f"{page}: WhatsApp analytics number changed")
+                for width in (320, 360, 390, 600, 768, 769, 1366):
+                    driver.set_window_size(width, 844)
+                    layout = driver.execute_script(
+                        """
+                        const bar = document.querySelector('.mobile-contact-bar');
+                        const buttons = [...bar.querySelectorAll('a')].map(a => {
+                          const r = a.getBoundingClientRect();
+                          return {left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height};
+                        });
+                        return {
+                          mobile: matchMedia('(max-width: 768px)').matches,
+                          shown: getComputedStyle(bar).display !== 'none',
+                          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+                          viewport: innerWidth, height: innerHeight, buttons,
+                          navFits: (() => {
+                            const logo = document.querySelector('nav > .nav-logo').getBoundingClientRect();
+                            const toggle = document.querySelector('[data-nav-toggle]').getBoundingClientRect();
+                            return logo.right <= toggle.left && toggle.right <= innerWidth;
+                          })(),
+                        };
+                        """
+                    )
+                    check(layout["overflow"] <= 1, f"{page}: overflow at {width}px")
+                    check(layout["shown"] == layout["mobile"], f"{page}: wrong contact bar breakpoint at {width}px")
+                    if layout["mobile"]:
+                        check(layout["navFits"], f"{page}: mobile logo and menu overlap at {width}px")
+                        for button in layout["buttons"]:
+                            check(button["width"] >= 44 and button["height"] >= 44, f"{page}: contact target too small at {width}px")
+                            check(button["left"] >= 0 and button["right"] <= layout["viewport"] and button["bottom"] <= layout["height"], f"{page}: contact button clipped at {width}px")
+                        check(layout["buttons"][0]["right"] <= layout["buttons"][1]["left"], f"{page}: contacts overlap at {width}px")
+                driver.set_window_size(390, 844)
+                driver.execute_script("document.documentElement.style.scrollBehavior = 'auto'")
+                # content-visibility sections can change document height as they enter view.
+                wait.until(lambda current: current.execute_script("window.scrollTo(0, document.documentElement.scrollHeight); return document.querySelector('footer').getBoundingClientRect().bottom <= document.querySelector('.mobile-contact-bar').getBoundingClientRect().top + 1"), f"{page}: contact bar covers the footer")
+                if page == "index.html":
+                    driver.execute_script("window.scrollTo(0, 0)")
+                    screenshot_dir = os.environ.get("CGD_SCREENSHOT_DIR")
+                    if screenshot_dir:
+                        Path(screenshot_dir).mkdir(parents=True, exist_ok=True)
+                        driver.save_screenshot(str(Path(screenshot_dir) / "home-mobile.png"))
+
+            # Contact choices must survive disabled or blocked application JavaScript.
+            driver.execute_cdp_cmd("Emulation.setScriptExecutionDisabled", {"value": True})
+            driver.get(local_url("index.html"))
+            check(driver.find_element(By.CSS_SELECTOR, '.mobile-call-sticky').is_displayed(), "call action requires JavaScript")
+            check(driver.find_element(By.CSS_SELECTOR, '.mobile-whatsapp-sticky').is_displayed(), "WhatsApp action requires JavaScript")
+            driver.execute_cdp_cmd("Emulation.setScriptExecutionDisabled", {"value": False})
+            print(f"Browser smoke tests passed: {len(CORE_PAGES)} core + {len(CITY_PAGES)} city pages, 7 viewport widths, both contact destinations, analytics, and no-JS contacts.")
         finally:
             driver.quit()
 
 
 if __name__ == "__main__":
-    main()
+    # HTTP gives assets, session storage, and referrers the same origin as deployment.
+    # Generic click Events above exercise analytics without launching an OS dialer.
+    class QuietHandler(SimpleHTTPRequestHandler):
+        def log_message(self, *_args):
+            pass
+
+    with ThreadingHTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=str(ROOT))) as server:
+        BASE_URL = f"http://127.0.0.1:{server.server_port}"
+        thread = Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            main()
+        finally:
+            server.shutdown()

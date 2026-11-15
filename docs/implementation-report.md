@@ -1,3 +1,5 @@
+> Historical report from August 2026. The current call/WhatsApp design and contact numbers are documented in [mobile-contact-update.md](mobile-contact-update.md).
+
 # Phone-first SEO, CRO, and technical implementation report
 
 Date: August 8, 2026

@@ -8,6 +8,7 @@ import {
   corePhonePages,
   excludedHtmlFiles,
   primaryPhone as phoneConfig,
+  whatsapp,
   redirectMap,
   retiredRedirects,
 } from "./site-config.mjs";
@@ -202,11 +203,24 @@ for (const file of indexableFiles) {
     }
   }
 
-  if (/<form\b|<textarea\b|type=["']submit["']|href=["'](?:mailto:|sms:|https?:\/\/(?:wa\.me|api\.whatsapp))/i.test(html)) {
-    errors.push(`${file}: exposes a prohibited non-phone conversion mechanism`);
+  if (/<form\b|<input\b|<textarea\b|type=["']submit["']|href=["'](?:mailto:|sms:)/i.test(html)) {
+    errors.push(`${file}: exposes a prohibited form, email, or SMS action`);
   }
-  if (/202-643-4062|tel:\+12026434062|\+1-202-643-4062/i.test(html)) {
-    errors.push(`${file}: still promotes the secondary phone without a distinct role`);
+  for (const tag of tags(html, "a")) {
+    const href = attribute(tag, "href");
+    if (/https?:\/\/(?:wa\.me|(?:api\.|web\.)?whatsapp\.com)(?:[/?#]|$)/i.test(href) ||
+        /(?:^|\s)whatsapp-cta(?:\s|$)/.test(attribute(tag, "class"))) {
+      if (href !== whatsapp.url) errors.push(`${file}: WhatsApp must preserve ${whatsapp.url}`);
+      if (!/whatsapp/i.test(attribute(tag, "aria-label")) && !/whatsapp/i.test(html.slice(html.indexOf(tag) + tag.length).split("</a>")[0])) {
+        errors.push(`${file}: messaging link needs an explicit WhatsApp label`);
+      }
+    }
+  }
+  if (!html.includes(`href="${whatsapp.url}"`)) {
+    errors.push(`${file}: missing separate WhatsApp contact action`);
+  }
+  if ((html.match(/class="mobile-contact-bar"/g) || []).length !== 1) {
+    errors.push(`${file}: expected one static mobile contact bar`);
   }
   if (
     /\b(?:send|share|text|upload|submit|provide|request)\b[^.<]{0,100}\b(?:photos?|videos?)\b|\bcall\s+or\s+text\b|\brequest\s+(?:a\s+)?(?:callback|quote|service|scheduled\s+(?:repair|visit|service))\b|\bwhat\s+to\s+send\b/i.test(html)
@@ -225,7 +239,7 @@ for (const file of indexableFiles) {
     const visible = decode(match[3]);
     if (number !== primaryPhone) errors.push(`${file}: non-primary/non-E.164 tel target tel:${number}`);
     const visibleNumber = visible.match(/(?:\+?1[- .]?)?\d{3}[- .]\d{3}[- .]\d{4}/)?.[0];
-    if (visibleNumber && !visibleNumber.includes("703-244-0559")) {
+    if (visibleNumber && visibleNumber.replace(/\D/g, "").slice(-10) !== primaryPhone.replace(/\D/g, "").slice(-10)) {
       errors.push(`${file}: visible telephone ${visibleNumber} does not match tel:${number}`);
     }
   }
@@ -477,6 +491,7 @@ if (!robots.includes(`Sitemap: ${canonicalOrigin}/sitemap.xml`)) {
 
 const mainJs = await readFile(resolve(root, "assets/main.js"), "utf8");
 if (!/"phone_click"/.test(mainJs)) errors.push("assets/main.js: phone_click event is missing");
+if (!/"whatsapp_click"/.test(mainJs)) errors.push("assets/main.js: separate whatsapp_click event is missing");
 if (/phone_call_click|qualified_phone_call|booked_job|form_(?:start|submit|error)|callback_submit/.test(mainJs)) {
   errors.push("assets/main.js: contains a prohibited or misleading analytics event");
 }

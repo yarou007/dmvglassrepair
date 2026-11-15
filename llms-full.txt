@@ -2,7 +2,8 @@
 
 Business: Capital Glass Door
 Domain: https://www.dmv247glassrepair.com/
-Primary phone: +1-703-244-0559
+Primary phone: +12026434062
+WhatsApp only: https://wa.me/17032440559 (703-244-0559)
 Hours: 24/7 emergency response
 Primary location reference: Washington, DC
 Service region: Washington DC, Arlington VA, Alexandria VA, Fairfax VA, Bethesda MD, Silver Spring MD, Rockville MD, Baltimore MD, Northern Virginia, Maryland, DMV area
@@ -55,4 +56,4 @@ Structured-data-supported entity signals on the website include:
 - BreadcrumbList
 - WebSite
 
-Last updated: 2026-05-20
+Last updated: 2026-11-15

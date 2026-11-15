@@ -3,8 +3,14 @@ export const canonicalHost = "www.dmv247glassrepair.com";
 export const apexHost = "dmv247glassrepair.com";
 
 export const primaryPhone = Object.freeze({
+  display: "202-643-4062",
+  e164: "+12026434062",
+});
+
+// Messaging is intentionally separate from the direct-call destination.
+export const whatsapp = Object.freeze({
   display: "703-244-0559",
-  e164: "+17032440559",
+  url: "https://wa.me/17032440559",
 });
 
 export const retiredRedirects = Object.freeze([

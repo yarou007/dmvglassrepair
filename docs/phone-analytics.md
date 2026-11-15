@@ -1,6 +1,6 @@
-# Phone click analytics
+# Call and WhatsApp click analytics
 
-Capital Glass Door uses the existing GA4 property `G-7ZE9DVWNFN`. The base GA4 tag remains in the page heads; `assets/main.js` adds one delegated click listener for every current or future `a[href^="tel:"]` link.
+Capital Glass Door uses the existing GA4 property `G-7ZE9DVWNFN`. The base GA4 tag remains in the page heads; `assets/main.js` adds one delegated click listener for every current or future `a[href^="tel:"]` or `.whatsapp-cta` link. Direct calls use `+12026434062`; WhatsApp uses the separate destination `https://wa.me/17032440559`.
 
 ## Event
 
@@ -30,6 +30,8 @@ Allowed `cta_position` values are `header`, `hero`, `after_intro`, `mid_page`, `
 
 No form, callback, text-message, photo-upload, `qualified_phone_call`, or `booked_job` event is implemented. Those outcome events require a future call-tracking or CRM offline-conversion integration.
 
+WhatsApp links emit `whatsapp_click` with the same controlled context and `visible_number: "703-244-0559"`. This records messaging intent only; it does not confirm message delivery or a conversation. Analytics never prevents navigation, and both contact choices are present in the HTML when JavaScript is unavailable.
+
 ## Mark `phone_click` as a GA4 key event
 
 An Analytics user with sufficient property access can open GA4 **Admin → Data display → Events**. After the property receives `phone_click`, find it under recent events and select the star. To register it before the first event arrives, select **Create event**, enter `phone_click` exactly, and mark it as a key event in that flow.
@@ -48,3 +50,5 @@ To use custom parameters in standard GA4 reports or Explorations, create event-s
 2. Confirm exactly one `phone_click` event and a supported `cta_position`.
 3. Test a URL with UTM parameters and dummy click-ID parameters; confirm only click-ID presence booleans are sent.
 4. Block the GA script or remove the test `gtag` stub and confirm the same telephone link still opens the device's dial action.
+
+5. Activate a WhatsApp link and confirm exactly one `whatsapp_click`, no `phone_click`, and the preserved 703 destination.
